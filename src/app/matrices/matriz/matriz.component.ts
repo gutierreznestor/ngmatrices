@@ -19,8 +19,18 @@ export class MatrizComponent implements OnInit {
 
   ngOnInit() {
     this.Formulario.get('mensaje').valueChanges.subscribe( mensaje => {
-      
+      this.generarMatriz(mensaje);
     });
+  }
+
+  generarMatriz( cadena: string ) {
+    console.clear();
+    console.log(this.convertirANumero(cadena[0]));
+  }
+
+  convertirANumero( caracter: string ) {
+    if(caracter) return caracter.charCodeAt(0);
+    return -1;
   }
 
   cifrar(){
