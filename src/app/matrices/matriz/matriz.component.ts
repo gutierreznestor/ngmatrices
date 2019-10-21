@@ -15,17 +15,36 @@ export class MatrizComponent implements OnInit {
     cifrado: [''],
   });
 
+  matriz:number[][] = [];
+  clave:number[][] = [[2,0,0],[4,3,0],[16,6,10]];
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.Formulario.get('mensaje').valueChanges.subscribe( mensaje => {
-      this.generarMatriz(mensaje);
+      this.matriz = this.generarMatriz(mensaje);
     });
   }
 
   generarMatriz( cadena: string ) {
-    console.clear();
-    console.log(this.convertirANumero(cadena[0]));
+    let matriz:number[][]=[];
+    let agregarFila = true;
+    let fila=0,col=0;
+    for(let i=0;i<cadena.length;i++) {
+      if(agregarFila) {
+        matriz.push([0,0,0]);
+      }
+      matriz[fila][col]=cadena.charCodeAt(i);
+      if(col==2) {
+        col=0;
+        fila++;
+        agregarFila=true;
+      } else {
+        agregarFila=false;
+        col++;
+      }
+    }
+    return matriz;
   }
 
   convertirANumero( caracter: string ) {
