@@ -10,7 +10,7 @@ export class MatrizComponent implements OnInit {
 
   Formulario = this.fb.group({
     mensaje: [''],
-    mensajeCifrado: [''],
+    mensajeAscii: [''],
     clave: [''],
     cifrado: [''],
   });
@@ -23,6 +23,9 @@ export class MatrizComponent implements OnInit {
   ngOnInit() {
     this.Formulario.get('mensaje').valueChanges.subscribe( mensaje => {
       this.matriz = this.generarMatriz(mensaje);
+      this.Formulario.patchValue({
+        mensajeAscii: this.matriz,
+      });
     });
   }
 
