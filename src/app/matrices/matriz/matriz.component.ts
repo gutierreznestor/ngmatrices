@@ -17,6 +17,7 @@ export class MatrizComponent implements OnInit {
 
   matriz:number[][] = [];
   clave:number[][] = [[2,0,0],[4,3,0],[16,6,10]];
+  claveInversa:number[][]=[[1/2,0,0],[-2/3,1/3,0],[-2/5,-1/5,1/10]];
 
   constructor(private fb: FormBuilder) { }
 
