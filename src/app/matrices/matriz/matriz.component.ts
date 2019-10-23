@@ -57,19 +57,20 @@ export class MatrizComponent implements OnInit {
   }
 
   cifrar(){
-    let suma = 0;
-    this.matriz.forEach((fila,i)=>{
-      console.log(`elem: ${fila}, i: ${i}`);
-      this.matriz[i].forEach((col,j) => {
-        suma +=this.matriz[i][j];
-      });
-      console.log(`suma: ${suma}`); 
-    });
-    console.log(`inversa: ${this.claveInversa}`);
+    this.multiplicarMatrices(this.matriz, this.clave);
   }
 
   descifrar(){
     console.log('descifrando');
+  }
+
+  multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
+    let producto = this.matrizVacia(matriz1, matriz2);
+    console.log(producto);
+  }
+
+  matrizVacia( matriz1: number[][], matriz2: number[][] ) {
+    return new Array(matriz1.length).fill(new Array(matriz2[0].length).fill(0));
   }
 
 }
