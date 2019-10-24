@@ -16,6 +16,7 @@ export class MatrizComponent implements OnInit {
   });
 
   matriz:number[][] = [];
+  producto:number[][] = [];
   clave:number[][] = [[2,0,0],[4,3,0],[16,6,10]];
   claveInversa:number[][]=[[1/2,0,0],[-2/3,1/3,0],[-2/5,-1/5,1/10]];
 
@@ -66,7 +67,20 @@ export class MatrizComponent implements OnInit {
 
   multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
     let producto = this.matrizVacia(matriz1, matriz2);
-    console.log(producto);
+    for(let i=0;i<matriz1.length;i++) {
+      for(let j=0;j<matriz2[0].length;j++) {
+        producto[i][j]=this.sumaProductos(i,j,matriz1,matriz2);
+      }
+    }
+    this.producto = producto;
+  }
+
+  sumaProductos( posx: number, posy: number, matriz1: number[][], matriz2: number[][]) {
+    let suma = 0;
+    for(let i=0; i<matriz1[0].length; i++) {
+      suma += matriz1[posx][i]*matriz2[i][posy];
+    }
+    return suma;
   }
 
   matrizVacia( matriz1: number[][], matriz2: number[][] ) {
