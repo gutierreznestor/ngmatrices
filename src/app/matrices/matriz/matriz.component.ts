@@ -27,7 +27,9 @@ export class MatrizComponent implements OnInit {
       this.matriz = this.generarMatriz(mensaje);
       this.Formulario.patchValue({
         mensajeAscii: this.matriz,
+        clave: this.clave
       });
+      this.cifrar();
     });
   }
 
@@ -66,11 +68,14 @@ export class MatrizComponent implements OnInit {
   }
 
   multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
-    let producto = this.matrizVacia(matriz1, matriz2);
+    console.clear();
+    let producto = [];
     for(let i=0;i<matriz1.length;i++) {
+      let fila=[];
       for(let j=0;j<matriz2[0].length;j++) {
-        producto[i][j]=this.sumaProductos(i,j,matriz1,matriz2);
+        fila.push(this.sumaProductos(i,j,matriz1,matriz2));
       }
+      producto.push(fila);
     }
     this.producto = producto;
   }
