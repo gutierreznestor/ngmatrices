@@ -11,8 +11,8 @@ export class MatrizComponent implements OnInit {
   Formulario = this.fb.group({
     mensaje: [''],
     mensajeAscii: [''],
-    clave: [''],
-    cifrado: [''],
+    clave: ['[2,0,0,4,3,0,16,6,10]'],
+    resultado: [''],
   });
 
   matriz:number[][] = [];
@@ -25,11 +25,6 @@ export class MatrizComponent implements OnInit {
   ngOnInit() {
     this.Formulario.get('mensaje').valueChanges.subscribe( mensaje => {
       this.matriz = this.generarMatriz(mensaje);
-      this.Formulario.patchValue({
-        mensajeAscii: this.matriz,
-        clave: this.clave
-      });
-      this.cifrar();
     });
   }
 
@@ -60,7 +55,8 @@ export class MatrizComponent implements OnInit {
   }
 
   cifrar(){
-    this.multiplicarMatrices(this.matriz, this.clave);
+    let res = this.multiplicarMatrices(this.matriz, this.clave);
+    this.Formulario.controls['resultado'].setValue(res);
   }
 
   descifrar(){
@@ -68,7 +64,6 @@ export class MatrizComponent implements OnInit {
   }
 
   multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
-    console.clear();
     let producto = [];
     for(let i=0;i<matriz1.length;i++) {
       let fila=[];
@@ -77,7 +72,7 @@ export class MatrizComponent implements OnInit {
       }
       producto.push(fila);
     }
-    this.producto = producto;
+    return producto;
   }
 
   sumaProductos( posx: number, posy: number, matriz1: number[][], matriz2: number[][]) {
