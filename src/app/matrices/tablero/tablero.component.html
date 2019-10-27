@@ -1,35 +1,47 @@
-<div class="card col-md-12">
-    <div class="card-body">
-        <form [formGroup]="Formulario">
-            <div class="form-group row">
-                <label for="mensaje" class="col-sm-2 col-form-label">Mensaje (M)</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" formControlName="mensaje" placeholder="Y va el tercero, y va el tercero...">
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-sm btn-primary" (click)="cifrar()" [disabled]="!Formulario.valid">Cifrar (C=M*k)</button>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="cifrado" class="col-sm-2 col-form-label">Matriz a Descifrar (C)</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" (click)="cifrar()" formControlName="mensajeADescifrar" placeholder="1826,759,840,178,0,0">
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-sm btn-primary" (click)="descifrar()">Descifrar (M=C*k^-1)</button>
-                </div>
-            </div>
-        </form>
-        <app-matriz [matriz]="clave" header="Clave (K)" *ngIf="clave.length>0"></app-matriz>
-        <app-matriz [matriz]="producto" header="Mensaje cifrado" *ngIf="producto.length>0"></app-matriz>
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+          <div class="card-header bg-primary mt-3 text-white text-center">Matrices</div>
+          <div class="card-body">
+              <form [formGroup]="Formulario">
+                  <div class="form-group row">
+                      <label for="mensaje" class="col-sm-2">Mensaje (M)</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="mensaje" placeholder="Y va el tercero, y va el tercero...">
+                      </div>
+                      <div class="col-sm-2">
+                          <button class="btn btn-sm btn-primary" (click)="cifrar()" [disabled]="!Formulario.valid">Cifrar</button>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-sm-2">
+                        <label for="cifrado">Matriz a Descifrar (C)</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" (click)="cifrar()" formControlName="mensajeADescifrar" placeholder="1826,759,840,178,0,0">
+                      </div>
+                      <div class="col-sm-2">
+                          <button class="btn btn-sm btn-primary" (click)="descifrar()">Descifrar</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
     </div>
-</div>
-<div class="col-md-6 offset-md-3">
-  <div class="card">
-    <div class="card-header bg-primary text-white">Mensaje Descifrado</div>
-    <div class="card-body">
-      <h3>{{ mensajeDescifrado }}</h3>
+    <div class="col-md-6 offset-md-3 text-center mt-3">
+      <app-matriz [matriz]="clave" header="Clave (K)" *ngIf="clave.length>0"></app-matriz>
+    </div>
+    <div class="col-md-6 offset-md-3" *ngIf="mensajeCifrado.length>0">
+      <app-matriz [matriz]="mensajeCifrado" header="Mensaje cifrado"></app-matriz>
+    </div>
+    <div class="col-md-6 offset-md-3" *ngIf="mensajeDescifrado">
+      <div class="card">
+        <div class="card-header bg-primary text-white text-center">Mensaje Descifrado</div>
+        <div class="card-body text-center">
+          <h3>{{ mensajeDescifrado }}</h3>
+        </div>
+      </div>
     </div>
   </div>
 </div>

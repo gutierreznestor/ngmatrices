@@ -14,7 +14,7 @@ export class TableroComponent implements OnInit {
   });
 
   matriz:number[][] = [];
-  producto:number[][] = [];
+  mensajeCifrado:number[][] = [];
   clave:number[][] = [[2,0,0],[4,3,0],[16,6,10]];
   claveInversa:number[][]=[[1/2,0,0],[-2/3,1/3,0],[-2/5,-1/5,1/10]];
   mensajeDescifrado: string = '';
@@ -81,7 +81,8 @@ export class TableroComponent implements OnInit {
   cifrar(){
     let mensaje = this.Formulario.controls['mensaje'].value;
     this.matriz = this.generarMatrizDesdeMensaje(mensaje);
-    this.producto = this.multiplicarMatrices(this.matriz, this.clave);
+    this.mensajeCifrado = this.multiplicarMatrices(this.matriz, this.clave);
+    this.mensajeDescifrado = null;
   }
 
   descifrar(){
@@ -90,7 +91,7 @@ export class TableroComponent implements OnInit {
     let matrizADescifrar = this.generarMatrizDesdeArreglo(arregloMensajeADescifrar);
     let producto = this.multiplicarMatrices(matrizADescifrar, this.claveInversa);
     this.mensajeDescifrado = this.matrizAMensaje(producto);
-    console.log(this.mensajeDescifrado);
+    this.mensajeCifrado=[];
   }
 
   multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
