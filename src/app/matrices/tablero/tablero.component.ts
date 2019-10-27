@@ -9,33 +9,32 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class TableroComponent implements OnInit {
 
   Formulario = this.fb.group({
-    mensaje: ['', [Validators.maxLength(150), Validators.minLength(3)]],
+    mensaje: [''],
+    mensajeADescifrar: [''],
   });
 
   matriz:number[][] = [];
   producto:number[][] = [];
   clave:number[][] = [[2,0,0],[4,3,0],[16,6,10]];
   claveInversa:number[][]=[[1/2,0,0],[-2/3,1/3,0],[-2/5,-1/5,1/10]];
+  mensajeDescifrado: string = '';
 
   constructor(
     private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
-    this.Formulario.get('mensaje').valueChanges.subscribe( mensaje => {
-      this.matriz = this.generarMatriz(mensaje);
-    });
   }
 
-  generarMatriz( cadena: string ) {
+  generarMatrizDesdeMensaje( mensaje: string ) {
     let matriz:number[][]=[];
     let agregarFila = true;
     let fila=0,col=0;
-    for(let i=0;i<cadena.length;i++) {
+    for(let i=0;i<mensaje.length;i++) {
       if(agregarFila) {
         matriz.push([0,0,0]);
       }
-      matriz[fila][col]=cadena.charCodeAt(i);
+      matriz[fila][col]=mensaje.charCodeAt(i);
       if(col==2) {
         col=0;
         fila++;
@@ -48,17 +47,50 @@ export class TableroComponent implements OnInit {
     return matriz;
   }
 
-  convertirANumero( caracter: string ) {
+  generarMatrizDesdeArreglo( arreglo: number[] ) {
+    let matriz:number[][]=[];
+    let agregarFila = true;
+    let fila=0,col=0;
+    arreglo.forEach( (numero,i)=> {
+      if(agregarFila) {
+        matriz.push([0,0,0]);
+      }
+      matriz[fila][col]=numero;
+      if(col==2) {
+        col=0;
+        fila++;
+        agregarFila=true;
+      } else {
+        agregarFila=false;
+        col++;
+      }
+    });
+    
+    return matriz;
+  }
+
+  caracterANumero( caracter: string ) {
     if(caracter) return caracter.charCodeAt(0);
     return -1;
   }
 
+  cadenaANumero( cadena: string ) {
+    return Number.parseInt(cadena);
+  }
+
   cifrar(){
+    let mensaje = this.Formulario.controls['mensaje'].value;
+    this.matriz = this.generarMatrizDesdeMensaje(mensaje);
     this.producto = this.multiplicarMatrices(this.matriz, this.clave);
   }
 
   descifrar(){
-    console.log('descifrando');
+    let mensajeADescifrar: string = this.Formulario.controls['mensajeADescifrar'].value;
+    let arregloMensajeADescifrar: number[] = mensajeADescifrar.split(',').map(elem => this.cadenaANumero(elem) );
+    let matrizADescifrar = this.generarMatrizDesdeArreglo(arregloMensajeADescifrar);
+    let producto = this.multiplicarMatrices(matrizADescifrar, this.claveInversa);
+    this.mensajeDescifrado = this.matrizAMensaje(producto);
+    console.log(this.mensajeDescifrado);
   }
 
   multiplicarMatrices( matriz1: number[][], matriz2: number[][] ) {
@@ -83,6 +115,16 @@ export class TableroComponent implements OnInit {
 
   matrizVacia( matriz1: number[][], matriz2: number[][] ) {
     return new Array(matriz1.length).fill(new Array(matriz2[0].length).fill(0));
+  }
+
+  matrizAMensaje( matriz: number[][]) {
+    let mensaje = '';
+    matriz.forEach((fila:number[]) => {
+      fila.forEach( numero => {
+        mensaje += String.fromCharCode(numero);
+      })
+    });
+    return mensaje;
   }
 
 }
